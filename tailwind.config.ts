@@ -33,6 +33,12 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    screens: {
+      'slim': '344px',
+      'se': '375px',
+      'max': '430px',
+      'pad': '820px',
+    }
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config

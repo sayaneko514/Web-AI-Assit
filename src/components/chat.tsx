@@ -20,18 +20,26 @@ export default function Chat() {
         ref.current.scrollTo(0, ref.current.scrollHeight);
     }, [messages]);
 
-    const words = [
-        { text: "Naomi's" },
+    const title = [
+        { text: "Welcome" },
+        { text: "to" },
         { text: "HairLab.", className: "bg-gradient-to-r from-[#f9ce34] to-[#6228d7] inline-block text-transparent bg-clip-text" },
+    ];
+
+    const slogan = [
+        { text: "New" },
+        { text: "Looks," },
+        { text: "Unmatched" },
+        { text: "Style" }
     ];
 
     return (
         <section>
             <div className='container flex h-screen flex-col items-center justify-center'>
-                <h1 className='scroll-m-20 text-5xl font-bold font-extrabold tracking-tight lg:text-7xl'>
-                    <TypewriterEffect words={words} />
+                <h1>
+                    <TypewriterEffect words={title} />
                 </h1>
-                <div className='mt-4 w-full max-w-lg rounded-lg border p-4 backdrop-blur-lg bg-white/30 border-white/20 shadow-lg text-gray-900'>
+                <div className='mt-4 w-full max-w-lg rounded-lg border p-4 backdrop-blur-lg bg-white/30 border border-black/[0.2] dark:border-white/[0.2] shadow-xl text-gray-900'>
                     <ScrollArea className='mb-2 h-[250px]' ref={ref}>
                         {error && <div className='text-sm text-red-400'>{error.message}</div>}
                         {messages.map((m) => (
