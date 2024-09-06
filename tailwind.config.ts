@@ -37,6 +37,7 @@ const config = {
       'slim': '344px',
       'se': '375px',
       'max': '430px',
+      'mi': '768px',
       'pad': '820px',
     }
   },
