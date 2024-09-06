@@ -9,6 +9,8 @@ import { TypewriterEffect } from './ui/typing-text';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CopyToClipboard from '@/components/copy-to-clipboard';
+import ReactMarkdown from 'react-markdown';
+
 
 export default function Chat() {
     const ref = useRef<HTMLDivElement>(null);
@@ -70,7 +72,7 @@ export default function Chat() {
                                                 <CopyToClipboard message={m} className='-mt-1'/>
                                             </div>
                                             <div className='mt-1.5 text-sm text-zinc-800'>
-                                                {m.content}
+                                                <ReactMarkdown>{m.content}</ReactMarkdown>
                                             </div>
                                         </div>         
                                     </div>

@@ -17,7 +17,7 @@ function Navbar({ className }: { className?: string }) {
 
   const checkApiStatus = async () => {
     try {
-      const response = await fetch('/api/ping');
+      const response = await fetch('/api/ping-gpt');
       if (response.ok) {
         setStatusColor("bg-green-300");
       } else {
@@ -79,7 +79,7 @@ function Navbar({ className }: { className?: string }) {
             <HoveredLink href="#">Contact Info</HoveredLink>
           </div>
         </MenuItem>
-        <a className="relative inline-flex items-center text-zinc-800 slim:text-xs se:text-xs max:text-sm md:text-xl">
+        <a className="relative inline-flex items-center text-zinc-800">
           Assistant Status
           <span className={`relative top-[1.5] -right-2 h-3 w-3 ${statusColor} rounded-full shadow-md`}></span>
         </a>
