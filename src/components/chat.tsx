@@ -45,7 +45,7 @@ export default function Chat() {
                     <ScrollArea className='mb-2 h-[250px]' ref={ref}>
                         {error && <div className='text-sm text-red-400'>{error.message}</div>}
                         {messages.map((m) => (
-                            <div key={m.id} className='mr-6 whitespace-per-wrap md:mr-12'>
+                            <div key={m.id} className='mr-6 whitespace-per-wrap'>
                                 {m.role === 'user' && (
                                     <div className='mb-6 flex gap-3'>
                                         <Avatar>
