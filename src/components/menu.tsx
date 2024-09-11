@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { HoveredLink, Menu, MenuItem, GalleryItem } from "@/components/ui/navbar-menu";
+import { HoveredLink, Menu, MenuItem, GalleryItem } from "@/components/ui/navbarMenu";
 import { cn } from "@/lib/utils";
 
 export function NavbarMenu() {
@@ -13,18 +13,23 @@ export function NavbarMenu() {
 
 function Navbar({ className }: { className?: string }) {
   const [active, setActive] = useState<string | null>(null);
-  const [statusColor, setStatusColor] = useState("bg-gray-300");
+  const [gptStatusColor, setGPTStatusColor] = useState("bg-gray-300");
 
   const checkApiStatus = async () => {
     try {
-      const response = await fetch('/api/ping-gpt');
-      if (response.ok) {
-        setStatusColor("bg-green-300");
+      const gptResponse = await fetch('/api/pingGPT');
+      if (gptResponse.ok) {
+        const dbResponse = await fetch('/api/pingDB');
+        if(dbResponse.ok){
+          setGPTStatusColor("bg-green-300");
+        } else {
+          setGPTStatusColor("bg-yellow-300");
+        }
       } else {
-        setStatusColor("bg-red-400");
+        setGPTStatusColor("bg-red-400");
       }
     } catch (error) {
-      setStatusColor("bg-red-400");
+      setGPTStatusColor("bg-red-400");
     }
   };
 
@@ -80,8 +85,11 @@ function Navbar({ className }: { className?: string }) {
           </div>
         </MenuItem>
         <a className="relative inline-flex items-center text-zinc-800">
+          button
+        </a>
+        <a className="relative inline-flex items-center text-zinc-800">
           Assistant Status
-          <span className={`relative top-[1.5] -right-2 h-3 w-3 ${statusColor} rounded-full shadow-md`}></span>
+          <span className={`relative top-[1.5] -right-2 h-3 w-3 ${gptStatusColor} rounded-full shadow-md`}></span>
         </a>
       </Menu>
     </div>
