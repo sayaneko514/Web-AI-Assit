@@ -1,6 +1,6 @@
 import Chat from '@/components/chat';
 import { NavbarMenu } from '@/components/menu';
-import { WavyBackground } from '@/components/ui/wavy-background';
+import { WavyBackground } from '@/components/ui/wavyBackground';
 
 export const runtime = 'edge';
 
