@@ -1,20 +1,33 @@
 'use client';
 
+import { ToolInvocation } from 'ai';
 import { useChat } from 'ai/react';
 import { useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SendHorizontalIcon } from 'lucide-react';
-import { TypewriterEffect } from './ui/typing-text';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { TypewriterEffect } from './ui/typingText';
+import { ScrollArea } from '@/components/ui/scrollArea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import CopyToClipboard from '@/components/copy-to-clipboard';
+import CopyToClipboard from '@/components/copyToClipboard';
 import ReactMarkdown from 'react-markdown';
 
 
+const getConfirmationLabel = (result: string) => {
+    if (result.includes('booked')) {
+        return 'Booking Confirmation';
+    } else if (result.includes('canceled')) {
+        return 'Cancellation Confirmation';
+    } else if (result.includes('rescheduled')) {
+        return 'Rescheduling Confirmation';
+    }
+    return 'System Confirmation';
+};
+
 export default function Chat() {
     const ref = useRef<HTMLDivElement>(null);
-    const { messages, input, handleInputChange, handleSubmit, isLoading, error} = useChat({
+    const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
+        maxToolRoundtrips: 5
     });
 
     useEffect(() => {
@@ -26,13 +39,6 @@ export default function Chat() {
         { text: "Welcome" },
         { text: "to" },
         { text: "HairLab.", className: "bg-gradient-to-r from-[#f9ce34] to-[#6228d7] inline-block text-transparent bg-clip-text" },
-    ];
-
-    const slogan = [
-        { text: "New" },
-        { text: "Looks," },
-        { text: "Unmatched" },
-        { text: "Style" }
     ];
 
     return (
@@ -60,16 +66,16 @@ export default function Chat() {
                                         </div>
                                     </div>
                                 )}
-                                {m.role === 'assistant' && (
+                                {m.role === 'assistant' && !m.toolInvocations && (
                                     <div className='mb-6 flex gap-3'>
                                         <Avatar>
                                             <AvatarImage src='' />
                                             <AvatarFallback className='bg-red-300 text-white'>AI</AvatarFallback>
                                         </Avatar>
                                         <div className='mt-1.5 w-full'>
-                                            <div className = 'flex justify-between'>
+                                            <div className='flex justify-between'>
                                                 <p className='font-semibold'>Assistant</p>
-                                                <CopyToClipboard message={m} className='-mt-1'/>
+                                                <CopyToClipboard message={m} className='-mt-1' />
                                             </div>
                                             <div className='mt-1.5 text-sm text-zinc-800'>
                                                 <ReactMarkdown>{m.content}</ReactMarkdown>
@@ -77,6 +83,29 @@ export default function Chat() {
                                         </div>         
                                     </div>
                                 )}
+                                {m.toolInvocations?.map((toolInvocation: ToolInvocation) => {
+                                    const toolCallId = toolInvocation.toolCallId;
+                                    const confirmationMessage = 'result' in toolInvocation
+                                        ? toolInvocation.result as string
+                                        : 'Processing...';
+                                    const confirmationLabel = getConfirmationLabel(confirmationMessage);
+                                    return (
+                                        <div className='mb-6 flex gap-3' key={toolCallId}>
+                                            <Avatar>
+                                                <AvatarImage src='' />
+                                                <AvatarFallback className='bg-yellow-300 text-white'>S</AvatarFallback>
+                                            </Avatar>
+                                            <div className='mt-1.5 w-full'>
+                                                <div className='flex justify-between'>
+                                                    <p className='font-semibold'>{confirmationLabel}</p>
+                                                </div>
+                                                <div className='mt-1.5 text-sm text-zinc-800 italic'>
+                                                    <ReactMarkdown>{confirmationMessage}</ReactMarkdown>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         ))}
                     </ScrollArea>
